@@ -1,80 +1,156 @@
-# Error handling and logging with Node Express web application framework
+# Effective Error Handling and Logging in Node Express Web Applications
 
-Error handling and logging, they go hand in hand in web application development. Whenever we encounter an unexpected situation in a web application, we probably want to log something out too. Also, not to forget users of the web app who would like to see sensible error messages generated for these errors.
+Error handling and logging, they go hand in hand in web application development. Whenever we encounter an unexpected situation in a web application, we want to log out something. We also want to return some meaningful error messages to the users of the web app and preferably with some ID that can be used to connect the error messages to the error logs we have for the backend.
 
-Basically we would like to be able to generate custom errors and send them back to users. We would like to log these errors out too, and somehow to be able to connect the errors to the incoming requests.
+With the ID, we can easily find the request in the logs and see what happened.
 
-Is there a simple way to handle this by using Express middleware? Let's find out.
+To achieve this, we need to:
 
-## What is an Express middleware?
+1. Generate request ID for each request
+2. Log requests with request ID
+3. Log errors with request ID
+4. Return error message with request ID to the user of the web app
 
-In Express, a middleware is a function that has access to the request and response objects, and also to the next middleware function in the web application's request - response cycle. Basically we are able to manipulate request and response objects in a middleware as we like. For example, we could set request date in a middleware to be used later in the cycle, in controllers or in middleware that get executed later in the stack.
+How to implement this in Node Express? Let's find out.
+
+## Enter the Middleware?
+
+In Express, a middleware is a function that has access to the request and response objects, and also to the next middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
+
+For example, we could set request date in a middleware to be used later in the cycle, in controllers or in the middleware that gets executed later in the stack.
 
 `/middlewares/requestTime.js`:
 
 ```
 const requestTime = (request, response, next) => {
-    request.headers["X-Request-Time"] = Date.now();
+    request.headers["x-request-time"] = Date.now();
     next();
 });
 
 export default requestTime;
 ```
 
-When creating APIs, we generally use several middlewares like `express.json` (a built-in middleware) for parsing incoming JSON payloads or a third-party middleware like `cors` to manipulate response headers to enable cross-origin requests.
+When creating APIs, we typically use several middlewares like `express.json`, a built-in middleware for parsing incoming JSON payloads, or a third-party middleware like `cors` to manipulate response headers to enable cross-origin requests.
 
-## Could we use a middleware for logging requests?
+## Generating Request ID in Middleware
 
-Indeed, we could. This is another common example of how we use middleware to add piece of functionality into our web applications.
+It appears that the request and response objects would be an appropriate location for transmitting request IDs throughout the pipeline. Let's create a separate middleware for this purpose.
+
+First, create a unique string to be used as the request ID:
+
+```
+  const requestId = uuidv4();
+```
+
+Add the generated request ID to the request headers:
+
+```
+  request.headers["x-request-id"] = requestId;
+```
+
+Add the request ID in the response headers too (this way, we return the same ID to the client):
+
+```
+  response.set("x-request-id", requestId);
+```
+
+For CORS requests, we also need to expose the request ID in the response headers like this:
+
+```
+  response.set("Access-Control-Allow-Headers", "x-request-id");
+  response.set("Access-Control-Expose-Headers", "x-request-id");
+```
+
+Finally, to make the request ID available in functions that are not part of the request-response cycle, we can set it in the `httpcontext` object like this:
+
+```
+  httpcontext.set("requestId", requestId);
+```
+
+The whole middleware would look something like this:
+
+`/middlewares/requestId.js`:
+
+```
+import httpcontext from "express-http-context";
+import { v4 as uuidv4 } from "uuid";
+
+const requestId = (request, response, next) => {
+  const requestId = uuidv4();
+
+  // Set request id in request headers
+  request.headers["x-request-id"] = requestId;
+
+  // Set request id in response headers
+  response.set("x-request-id", requestId);
+
+  // Set CORS headers for allowing request id to be sent along response headers
+  response.set("Access-Control-Allow-Headers", "x-request-id");
+  response.set("Access-Control-Expose-Headers", "x-request-id");
+
+  // Set request id in context
+  httpcontext.set("requestId", requestId);
+
+  next();
+};
+
+export default requestId;
+```
+
+The generated request ID can now be utilized not only in the middleware executed later in the stack, but also in controllers and other functions that are independent of the request-response cycle.
+
+And as we have set request ID in the response headers, we can access it in the client side too. For example, we could log the request ID in the browser console like this:
+
+```
+  console.log(`Request ID: ${response.headers["x-request-id"]}`);
+```
+
+## Logging Requests
+
+Let's log requests with the request id we have generated. We can create a middleware for this too.
 
 `/middlewares/requestLogger.js`:
 
 ```
 const requestLogger = (request, response, next) => {
-    // We should have request time in headers now
     const requestTime = request.headers["X-Request-Time"];
-    console.log(`[Request]: ${requestTime} ${request.method} ${request.url}`);
+    const requestId = httpcontext.get("requestId");
+
+    console.log(
+      `[Request]: ${requestTime} ${requestId} ${request.method} ${
+        request.url
+      } ${JSON.stringify(request.params)} ${JSON.stringify(request.body)}`
+    );
+
     next();
 }
 
 export default requestLogger;
 ```
 
-Now our `app.js` would look something like this:
+An example log would look like this:
 
 ```
-import express from "express";
-import cors from "cors";
-import router from "./api/index";
-import requestLogger from "./middlewares/requestLogger";
-import requestTime from "./middlewares/requestDate";
-
-...
-
-// Include request time in request headers
-app.use(requestTime);
-
-// Log requests
-app.use(requestLogger);
-
-// Define API routes
-app.use("/api", router);
-
-export default app;
+[Request]: Wed, 01 Feb 2023 08:27:14 GMT eb2d9ba3-6d9c-4285-be0c-2a667e751853 GET /api/books {} {}
+[Request]: Wed, 01 Feb 2023 08:28:09 GMT b0b25684-0fa2-40f6-b37b-4b5f53a26d10 PUT /api/books/65ddc15e-1db4-473e-bda2-7870eb06e370 {} {"id":"65ddc15e-1db4-473e-bda2-7870eb06e370","author":"Robert C. Martin","title":"Clean Code","description":"A Hand Book of Agile Software Craftmanship."}
+[Request]: Wed, 01 Feb 2023 08:28:09 GMT d231bb75-2ebf-440d-b593-c82d59edeb71 GET /api/books {} {}
 ```
 
-## Logging errors?
+In real world applications, we would probably want to use a logging library like `winston` or `pino` to log requests, but for the sake of simplicity, we are using `console.log` here.
 
-So how about logging errors? There is another type of middleware called Error-handling middleware, the only difference being that these functions take four arguments instead of three we saw for the other middleware. The fourth argument would be the actual error object.
+## Logging Errors
 
-So in a similar manner our Error-handling middleware would be something like:
+For error logging, there is a type of middleware called error-handling middleware, which differs from other middleware by taking four arguments instead of the three we saw previously. The fourth argument represents the error object itself.
+
+We can use this middleware to log errors with the request ID we have generated:
 
 `/middlewares/errorHandler.js`:
 
 ```
 const errorHandler = (error, request, response, next) => {
     const requestTime = request.headers["requestTime"];
-    console.log(`[Error]: ${requestTime} ${error.stack || error.message}`);
+    const requestId = httpcontext.get("requestId");
+    console.error(`[Error]: ${requestTime} ${requestId} ${error.stack || error.message}`);
 
     response
         .status(500)
@@ -84,23 +160,7 @@ const errorHandler = (error, request, response, next) => {
 export default errorHandler;
 ```
 
-and in `app.js` now:
-
-```
-import errorHandler from "./middlewares/errorHandler";
-
-...
-
-// Define API routes
-app.use("/api", router);
-
-// Handle errors
-app.use(errorHandler)
-
-export default app;
-```
-
-That takes care of that. But how our error handler gets triggered then? Just pass your error object to the `next()` function and Express calls your first error handler in the stack.
+But how our error handler gets triggered in practice? Just pass your error object to the `next()` function and Express calls your first error handler in the stack:
 
 In `/api/books.js`:
 
@@ -120,11 +180,11 @@ router.get("/:id", async (request, response, next) => {
 });
 ```
 
-So here we picked up the thrown error in catch clause and passed it to error handler using `next()` function.
+If we try to get a book that does not exist, next function is called with an error object. This triggers the error handler middleware and logs the error.
 
-## Returning errors to client
+## Returning Errors to the Client
 
-To return meaningful errors to client the response status should be set and reflect the generated error. Javascript Error class does not have status field but we can extend the Error class to have one.
+To return meaningful errors to client the response status should be set and reflect the generated error. Javascript Error class does not have status field but we can extend the Error class to have one:
 
 In `/utils/types.js`:
 
@@ -158,7 +218,7 @@ router.get("/:id", async (request, response, next) => {
 });
 ```
 
-And the error handler in `/middlewares/errorHandler.js` becomes now:
+The error handler in `/middlewares/errorHandler.js` becomes now:
 
 ```
 const errorHandler = (error, request, response, next) => {
@@ -175,9 +235,11 @@ export default errorHandler;
 
 We log the error in our handler and send the error with status back to the client now.
 
-## Split further
+## Split Further
 
-Instead of stopping here, we could split logging and returning the error into separate handlers.
+In actual implementation, it is common to log the error in one middleware and handle the error response in another. This approach allows us to reuse the same middleware for various purposes.
+
+We can split logging and returning the error into separate middlewares like this:
 
 In `/middlewares/errorHandler.js`:
 
@@ -203,7 +265,7 @@ export {
 
 ```
 
-And `app.js` becomes now:
+And `app.js` with the whole middleware stack becomes now:
 
 ```
 import express from "express";
@@ -225,6 +287,9 @@ app.options("*", cors());
 // Parse incoming JSON into request body
 app.use(express.json());
 
+// Include request id in request headers
+app.use(requestId);
+
 // Include request time in request headers
 app.use(requestTime);
 
@@ -243,16 +308,27 @@ app.use(returnError);
 export default app;
 ```
 
-## Final words
+Finally, an example how the user could see the error with the request ID that can be used to connect events together in different logs:
 
-We have now used Express middleware first to add request time to request headers where it becomes available further down the web application's request - response cycle. Similarly to request time, we could add request id which could be used to connect events together in different logs, for example.
+![Book not found](./images/book-not-found.png)
 
-We have also added middleware for logging requests, logging errors and returning errors back to client. For this we created HttpError class which expanded Javascript Error class to include field for http response status. Here we also could expand the error class further to fit whatever needs we have for the web application in hand (we might want to return validation metadata to the client, for example).
+Again, in practice, we probably would like to show the request ID only for errors that are not 4xx errors (client errors).
 
-In general, we see that Express middleware is a handy method for adding functionality into the request processing stack.
+## Conclusion
 
-## Acknowledgements
+In this article, we have demonstrated how to utilize Express middleware to add functionality to the request-response cycle in a web application. First, we added the request time to the request headers, making it available throughout the pipeline. We then added the request ID, which can be used to connect events across different logs.
+
+Additionally, we implemented middleware for logging requests, logging errors, and returning errors to the client. To achieve this, we created the HttpError class, which extends the built-in Error class in JavaScript and includes a field for the HTTP response status code. This can be further extended to accommodate specific needs for the web application, such as including validation metadata in the error response.
+
+Overall, Express middleware provides a convenient and flexible means for adding functionality to the request processing stack.
+
+## Author Information
 
 Sami Ruokamo is a software developer and works at Buutti.
 
 ## References
+
+[1] https://expressjs.com/en/guide/error-handling.html (Error handling)
+[2] https://http.dev/x-request-id (X-Request-ID)
+[3] https://javascript.info/custom-errors (Custom errors, extending Error)
+[4] https://sematext.com/blog/node-js-error-handling/#what-is-error-handling-in-node-js (Node.js Error Handling Made Easy: Best Practices On Just About Everything You Need to Know)
