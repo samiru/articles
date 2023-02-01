@@ -324,7 +324,9 @@ Overall, Express middleware provides a convenient and flexible means for adding 
 
 ## Author Information
 
-Sami Ruokamo is a software developer and works at Buutti.
+Sami Ruokamo is a software developer and works at Buutti. He is interested in software development, especially in web development. He has been working with web application development for over 10 years. He is also interested in DevOps and cloud technologies.
+
+To see the ideas presented in this article in action, check out https://github.com/samiru/node-express-react-template.
 
 ## References
 
