@@ -330,7 +330,7 @@ To see the ideas presented in this article in action, check out https://github.c
 
 ## References
 
-[1] https://expressjs.com/en/guide/error-handling.html (Error handling)
-[2] https://http.dev/x-request-id (X-Request-ID)
-[3] https://javascript.info/custom-errors (Custom errors, extending Error)
-[4] https://sematext.com/blog/node-js-error-handling/#what-is-error-handling-in-node-js (Node.js Error Handling Made Easy: Best Practices On Just About Everything You Need to Know)
+- [1] https://expressjs.com/en/guide/error-handling.html (Error handling)
+- [2] https://http.dev/x-request-id (X-Request-ID)
+- [3] https://javascript.info/custom-errors (Custom errors, extending Error)
+- [4] https://sematext.com/blog/node-js-error-handling/#what-is-error-handling-in-node-js (Node.js Error Handling Made Easy: Best Practices On Just About Everything You Need to Know)
