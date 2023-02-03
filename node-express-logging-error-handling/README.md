@@ -322,11 +322,11 @@ export default app;
 
 ## Conclusion
 
-In this article, we have demonstrated how to utilize Express middleware to add functionality to the request-response cycle in a web application. First, we added the request time to the request headers, making it available throughout the pipeline. We then added the request ID, which can be used to connect events across different logs.
+In this article, we showed how to add request ID to the request headers for an easy access throughout the pipeline. The request ID can be used to connect events and log information accross different parts of the application.
 
-Additionally, we implemented middleware for logging requests, logging errors, and returning errors to the client. To achieve this, we created the HttpError class, which extends the built-in Error class in JavaScript and includes a field for the HTTP response status code. This can be further extended to accommodate specific needs for the web application, such as including validation metadata in the error response.
+Additionally, we implemented middleware for logging requests, logging errors, and returning errors to the client. To achieve this, we created the HttpError class, which extends the built-in Error class in JavaScript and includes a field for the HTTP response status code. This could be further extended to accommodate specific needs for the web application, such as including validation metadata in the error response.
 
-Overall, Express middleware provides a convenient and flexible means for adding functionality to the request processing stack.
+The use of request IDs and Express middleware is a powerful tool for effective error handling and logging in a web application.
 
 ## Author Information
 
