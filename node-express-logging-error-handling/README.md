@@ -1,8 +1,10 @@
-# Effective Error Handling and Logging in Node Express Web Applications
+# Improving Error Diagnosis in Node Express with Request IDs
 
-Error handling and logging, they go hand in hand in web application development. Whenever we encounter an unexpected situation in a web application, we want to log out something. We also want to return some meaningful error messages to the users of the web app and preferably with some ID that can be used to connect the error messages to the error logs we have for the backend.
+Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application. Depending on the error we also might want to show users some ID that could be used to connect the error message to the error logs we have for the backend.
 
-With the ID, we can easily find the request in the logs and see what happened.
+Additionally, in the scenario where our APIs calls microservices, it may be beneficial to pass along the error ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the error ID.
+
+In this article, we will learn how to generate a unique request ID for each request, and how to log requests and errors with the request ID. We will also learn how to return the request ID to the user of the web application.
 
 To achieve this, we need to:
 
@@ -15,7 +17,7 @@ How to implement this in Node Express? Let's find out.
 
 ## Enter the Middleware?
 
-In Express, a middleware is a function that has access to the request and response objects, and also to the next middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
+In Express, a middleware is a function that has access to the `request` and `response` objects, and also to the `next` middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
 
 For example, we could set request date in a middleware to be used later in the cycle, in controllers or in the middleware that gets executed later in the stack.
 
@@ -97,7 +99,7 @@ const requestId = (request, response, next) => {
 export default requestId;
 ```
 
-The generated request ID can now be utilized not only in the middleware executed later in the stack, but also in controllers and other functions that are independent of the request-response cycle.
+The generated request ID can now be utilized not only in the middleware executed later in the stack, but also in other functions that are independent of the request-response cycle.
 
 And as we have set request ID in the response headers, we can access it in the client side too. For example, we could log the request ID in the browser console like this:
 
