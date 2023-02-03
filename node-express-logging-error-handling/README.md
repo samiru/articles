@@ -1,5 +1,7 @@
 # Improving Error Diagnosis in Node Express with Request IDs
 
+![Error Diagnosis](./images/error-diagnosis.png)
+
 Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application. Depending on the error we also might want to show users some ID that could be used to connect the error message to the error logs we have for the backend.
 
 Additionally, in the scenario where our APIs calls microservices, it may be beneficial to pass along the error ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the error ID.
