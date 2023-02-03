@@ -237,9 +237,7 @@ We log the error in our handler and send the error with status back to the clien
 
 In the client, depending on the error status, we might want to show the request ID to the user so that they can report the error back to support.
 
-How to access the request ID in the client side then?
-
-As we have set request ID in the response headers, we can now access it in the client side too. For example, we can log the request ID in the browser console like this:
+How to access the request ID in the client side then? As we have set request ID in the response headers, we can now access it in the client side too. For example, we can log the request ID in the browser console like this:
 
 ```
   console.log(`Request ID: ${response.headers["x-request-id"]}`);
