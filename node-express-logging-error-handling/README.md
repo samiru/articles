@@ -136,7 +136,7 @@ An example log would look like this:
 [Request]: Wed, 01 Feb 2023 08:28:09 GMT d231bb75-2ebf-440d-b593-c82d59edeb71 GET /api/books {} {}
 ```
 
-In real world applications, we would probably want to use a logging library like `winston` or `pino` to log requests, but for the sake of simplicity, we are using `console.log` here.
+In real-world applications, we would probably want to use a logging library like `winston` or `pino` to log requests, but for the sake of simplicity, we are using `console.log` here.
 
 ## Logging Errors
 
@@ -243,7 +243,7 @@ How to access the request ID in the client side then? As we have set request ID 
   console.log(`Request ID: ${response.headers["x-request-id"]}`);
 ```
 
-In real-world application, we would probably show the error with request ID to the user in the UI by using a toast or a modal.
+In real-world applications, we would probably show the error with request ID to the user in the UI by using a toast or a modal.
 
 ## Split Further
 
