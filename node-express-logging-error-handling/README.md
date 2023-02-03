@@ -103,11 +103,7 @@ export default requestId;
 
 The generated request ID can now be utilized not only in the middleware executed later in the stack, but also in other functions that are independent of the request-response cycle.
 
-And as we have set request ID in the response headers, we can access it in the client side too. For example, we could log the request ID in the browser console like this:
-
-```
-  console.log(`Request ID: ${response.headers["x-request-id"]}`);
-```
+As we have set request ID in the response headers, we can access it in the client side too.
 
 ## Logging Requests
 
@@ -186,7 +182,7 @@ router.get("/:id", async (request, response, next) => {
 
 If we try to get a book that does not exist, next function is called with an error object. This triggers the error handler middleware and logs the error.
 
-## Returning Errors to the Client
+## Returning Errors to Client
 
 To return meaningful errors to client the response status should be set and reflect the generated error. Javascript Error class does not have status field but we can extend the Error class to have one:
 
@@ -239,9 +235,21 @@ export default errorHandler;
 
 We log the error in our handler and send the error with status back to the client now.
 
+In the client, depending on the error status, we might want to show the request ID to the user so that they can report the error back to support.
+
+How to access the request ID in the client side then?
+
+As we have set request ID in the response headers, we can now access it in the client side too. For example, we can log the request ID in the browser console like this:
+
+```
+  console.log(`Request ID: ${response.headers["x-request-id"]}`);
+```
+
+In real-world application, we would probably show the error with request ID to the user in the UI by using a toast or a modal.
+
 ## Split Further
 
-In actual implementation, it is common to log the error in one middleware and handle the error response in another. This approach allows us to reuse the same middleware for various purposes.
+In actual implementation, it makes sense to log the error in one middleware and handle the error response in another. This approach allows us to reuse the same middleware depending on the situation.
 
 We can split logging and returning the error into separate middlewares like this:
 
@@ -311,12 +319,6 @@ app.use(returnError);
 
 export default app;
 ```
-
-Finally, an example how the user could see the error with the request ID that can be used to connect events together in different logs:
-
-![Book not found](./images/book-not-found.png)
-
-Again, in practice, we probably would like to show the request ID only for errors that are not 4xx errors (client errors).
 
 ## Conclusion
 
