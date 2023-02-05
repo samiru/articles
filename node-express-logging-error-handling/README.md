@@ -21,7 +21,9 @@ How to implement this in Node Express? Let's find out.
 
 In Express, a middleware is a function that has access to the `request` and `response` objects, and also to the `next` middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
 
-For example, we could set request date in a middleware to be used later in the cycle, in controllers or in the middleware that gets executed later in the stack.
+When creating APIs, we typically use several middlewares like `express.json`, a built-in middleware for parsing incoming JSON payloads, or a third-party middleware like `cors` to manipulate response headers to enable cross-origin requests. But we can also create our own middleware functions to do whatever we want.
+
+For example, we could set request date in a middleware to be used later in the cycle, in controllers or in other middleware that gets executed later in the stack.
 
 `/middlewares/requestTime.js`:
 
@@ -34,7 +36,7 @@ const requestTime = (request, response, next) => {
 export default requestTime;
 ```
 
-When creating APIs, we typically use several middlewares like `express.json`, a built-in middleware for parsing incoming JSON payloads, or a third-party middleware like `cors` to manipulate response headers to enable cross-origin requests.
+Similarly, we can create a middleware to log requests and errors, and for request ID generation too.
 
 ## Generating Request ID in Middleware
 
