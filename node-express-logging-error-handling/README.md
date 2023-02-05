@@ -6,7 +6,7 @@ Error handling and logging, they go hand in hand in web application development.
 
 Additionally, in the scenario where our APIs calls microservices, it may be beneficial to pass along the request ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the request ID.
 
-In this article, we will learn how to generate a unique request ID for each request, and how to log requests and errors with the request ID. We will also learn how to return the request ID to the user of the web application.
+In this article, we will learn how to generate such a unique request ID for each request, and how to log requests and errors with the request ID. We will also learn how to return the request ID to the users of the web application.
 
 To achieve this, we need to:
 
