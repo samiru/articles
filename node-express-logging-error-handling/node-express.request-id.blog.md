@@ -38,6 +38,8 @@ But even without support for request IDs in the platform, this is easy to implem
 
 Let's see how we could implement request ID generation in Node Express.
 
+In principle, the process would be the same in other web frameworks too, just generate a unique string for each request and add it to the request headers. If one likes to return the request ID to the user of the web application, it can be added to the response headers too.
+
 In Express, we can use a middleware to generate a request ID for each request. To put simply, a middleware is a function that has access to the `request` and `response` objects, and also to the `next` middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
 
 A middleware that generates a request ID for each request could look like this:
