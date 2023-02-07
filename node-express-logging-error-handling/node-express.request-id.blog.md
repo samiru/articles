@@ -1,12 +1,16 @@
 # Improving Web Application Error Diagnosis with Request IDs
 
-Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application. Depending on the error we also might want to show users some ID that could be used to connect the error message to the error logs we have for the backend.
+Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application.
 
-Additionally, if our APIs call microservices, it may be beneficial to pass along the request ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the request ID.
+Imagine the following scenario:
+
+> A user of our web application is trying to log in. The user enters the correct username and password, but the login fails. The user is confused and doesn't know what to do. We want to help the user to understand what happened. We want to show the user an error message that contains an ID that the user can use to contact us. We also want to log the error with the request ID so that we can easily trace back to the original request and understand what happened.
+
+Maybe in this case, the authentication service was down? Or maybe the service bus we were using to pass down the authentication request, was timing out? Whatever the reason was, without something to connect the error to the request, it would be hard to understand what happened.
 
 Let's spend some time to understand how we can improve error diagnosis with request IDs.
 
-## What happens when a browser makes a request to a web application?
+## A Word about HTTP Request and Response Cycle
 
 Let's start with the basics. What happens when a browser makes a request to a web application? The web application receives the request, processes it, and returns a response to be displayed in the browser.
 
@@ -34,9 +38,9 @@ Could we do this automatically? Well, it depends on the web server and the platf
 
 But even without support for request IDs in the platform, this is easy to implement by ourselves. The process is the same for all frameworks and platforms. We just need to generate a unique string for each request and add it to the request headers. If one likes to return the request ID to the user of the web application, it can be added to the response headers too.
 
-## Example: How to Generate Request IDs in Node Express?
+## Example: How to Generate Request IDs on Node Express?
 
-Let's see how we could implement request ID generation in Node Express. In principle, the process would be the same in other web frameworks too, just generate a unique string for each request and add it to the request headers.
+Let's see how we could implement request ID generation on Node Express. In principle, the process would be the same in other web frameworks too, just generate a unique string for each request and add it to the request headers.
 
 In Express, we can use a middleware to generate a request ID for each request. To put simply, a middleware is a function that has access to the `request` and `response` objects, and also to the `next` middleware function in the web application's request-response cycle. Basically we are able to manipulate request and response objects in a middleware as we like.
 
