@@ -139,4 +139,4 @@ All in all, request IDs are a simple but powerful tool for tracking requests and
 
 Sami Ruokamo is a software developer and works at Buutti. He is interested in software development, especially in web development. He has been working with web application development for over 10 years. He is also interested in DevOps and cloud technologies.
 
-To see the ideas presented in this article in action, check out https://github.com/samiru/node-express-react-template.
+To see a more thorough presentation of implementing these ideas on Node Express, check out https://github.com/samiru/articles/blob/main/node-express-logging-error-handling/node-express.request-id.tutorial.md.
