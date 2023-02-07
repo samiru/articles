@@ -22,7 +22,9 @@ Thus, these headers are used to pass information between the browser and the web
 
 Or something else, like a request ID.
 
-## What is a Request ID?
+## Request ID to the Rescue
+
+What is a Request ID?
 
 A request ID is a unique identifier for each request. It is a string that is generated for each request and is passed along with the request and the response. The request ID is used to identify the request in the logs and to connect the request to the response.
 
