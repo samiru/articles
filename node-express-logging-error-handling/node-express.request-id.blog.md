@@ -101,7 +101,7 @@ As we already have set the request ID in the response headers in our request ID 
 
 How this request ID would be used by the user of the web application depends on the application. For example, the user could send the request ID to the support team if they encounter an error. With the request ID, the support team could easily find the related request and the error log from the logs.
 
-To determine if the users of the users of the web application should be able to see the request ID, we would probably examine the error status in the frontend. Typically, if error status is 5xx, we would show the request ID to the user.
+To determine if the users of the web application should be able to see the request ID, we would probably examine the error status in the frontend. Typically, if error status is 5xx, we would show the request ID to the user.
 
 This way the user could pass the request ID to the support team for closer examination.
 
