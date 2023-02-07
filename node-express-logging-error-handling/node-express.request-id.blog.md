@@ -10,22 +10,6 @@ Maybe in this case, the authentication service was down? Or maybe the service bu
 
 Let's spend some time to understand how we can improve error diagnosis with request IDs.
 
-## A Word about HTTP Request and Response Cycle
-
-Let's start with the basics. What happens when a browser makes a request to a web application? The web application receives the request, processes it, and returns a response to be displayed in the browser.
-
-But how this exactly works, then?
-
-When a browser makes a request to a web application, the request is sent to the web server as a HTTP request. A HTTP request contains information about the request, such as the request method, the URL, and the request headers. By using the request method and the URL, the web server can determine a web application to process the request.
-
-When the web application has processed the request, it returns a HTTP response to the web server which then passes the response back to the browser. The response contains information about the response, such as the response status code, the response headers, and the response body. The response body contains the actual data that gets returned to the browser.
-
-Both the request and the response contain headers. The request headers contain information about the browser, the operating system, and the user agent, while the response headers contain information about the web application, such as the server name, the server version, and the server type.
-
-Thus, these headers are used to pass information between the browser and the web application. They can also contain arbitrary information about the request and the response.
-
-We could pass a request ID in these headers too.
-
 ## Request ID to the Rescue
 
 What is a Request ID?
