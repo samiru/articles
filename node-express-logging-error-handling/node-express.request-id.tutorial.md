@@ -1,58 +1,8 @@
-# Improving Error Diagnosis with Request IDs
+# Improving Error Diagnosis in Node Express with Request IDs
 
 Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application. Depending on the error we also might want to show users some ID that could be used to connect the error message to the error logs we have for the backend.
 
-Additionally, if our APIs call microservices, it may be beneficial to pass along the request ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the request ID.
-
-Let's spend some time to understand how we can improve error diagnosis with request IDs.
-
-## HTTP Request and Response Cycle
-
-Let's start with the basics. What happens when a browser makes a request to a web application? The web application receives the request, processes it, and returns a response to be displayed in the browser.
-
-But how this exactly works, then?
-
-When a browser makes a request to a web application, the request is sent to the web server as a HTTP request. A HTTP request contains information about the request, such as the request method, the URL, and the request headers. By using the request method and the URL, the web server can determine a web application to process the request.
-
-When the web application has processed the request, it returns a HTTP response to the web server which then passes the response back to the browser. The response contains information about the response, such as the response status code, the response headers, and the response body. The response body contains the actual data that gets returned to the browser.
-
-Both the request and the response contain headers. The request headers contain information about the browser, the operating system, and the user agent, while the response headers contain information about the web application, such as the server name, the server version, and the server type.
-
-Thus, these headers are used to pass information between the browser and the web application. They can also contain arbitrary information about the request and the response.
-
-Or something else, like a request ID.
-
-## Request ID to the Rescue
-
-What is a Request ID?
-
-A request ID is a unique identifier for each request. It is a string that is generated for each request and is passed along with the request and the response. The request ID is used to identify the request in the logs and to connect the request to the response.
-
-A natural place to add the request ID to the headers is whenever our web application receives a request. This way, the request ID is available for the whole request-response cycle.
-
-...
-
-- Existing implementations? Any web server doing this automatically? Heroku? https://devcenter.heroku.com/articles/http-request-id
-
-## How to Generate Request IDs?
-
-## How to Log Requests and Errors with Request IDs?
-
-## How to Return Request IDs to the Users of the Web Application?
-
-## How to pass Request IDs to Microservices?
-
-## Conclusion
-
-## Author Information
-
-Sami Ruokamo is a software developer and works at Buutti. He is interested in software development, especially in web development. He has been working with web application development for over 10 years. He is also interested in DevOps and cloud technologies.
-
-To see the ideas presented in this article in action, check out https://github.com/samiru/node-express-react-template.
-
-## References
-
-....
+Additionally, in the scenario where our APIs calls microservices, it may be beneficial to pass along the request ID for logging purposes within the microservice. This way, we can easily trace back to the original request through the logs and understand what occurred with the help of the request ID.
 
 In this article, we will learn how to generate such a unique request ID for each request, and how to log requests and errors with the request ID. We will also learn how to return the request ID to the users of the web application.
 
@@ -163,8 +113,8 @@ Let's log requests with the request id we have generated. We can create a middle
 
 ```
 const requestLogger = (request, response, next) => {
-    const requestTime = request.headers["X-Request-Time"];
-    const requestId = httpcontext.get("requestId");
+    const requestTime = request.headers["x-request-time"];
+    const requestId = request.headers["x-request-id"];
 
     console.log(
       `[Request]: ${requestTime} ${requestId} ${request.method} ${
@@ -199,7 +149,8 @@ We can use this middleware to log errors with the request ID we have generated:
 ```
 const errorHandler = (error, request, response, next) => {
     const requestTime = request.headers["requestTime"];
-    const requestId = httpcontext.get("requestId");
+    const requestId = request.headers["requestId"];
+
     console.error(`[Error]: ${requestTime} ${requestId} ${error.stack || error.message}`);
 
     response
@@ -375,6 +326,12 @@ In this article, we showed how to add request ID to the request headers for an e
 Additionally, we implemented middleware for logging requests, logging errors, and returning errors to the client. To achieve this, we created the HttpError class, which extends the built-in Error class in JavaScript and includes a field for the HTTP response status code. This could be further extended to accommodate specific needs for the web application, such as including validation metadata in the error response.
 
 The use of request IDs and Express middleware is a powerful tool for effective error handling and logging in a web application.
+
+## Author Information
+
+Sami Ruokamo is a software developer and works at Buutti. He is interested in software development, especially in web development. He has been working with web application development for over 10 years. He is also interested in DevOps and cloud technologies.
+
+To see the ideas presented in this article in action, check out https://github.com/samiru/node-express-react-template.
 
 ## References
 
