@@ -18,7 +18,7 @@ A request ID is a unique identifier for each request. It is a string that is gen
 
 A natural place to add the request ID to the headers is whenever our web application receives a request. This way, the request ID is available for the whole request-response cycle.
 
-Could we do this automatically? Well, it depends on the web server and the platform you are using. For example, in Heroku, the request ID is automatically added to the request headers.
+Could we do this automatically? Well, it depends on the web server and the platform one is using. For example, in Heroku, the request ID is automatically added to the request headers.
 
 But even without support for request IDs in the platform, this is easy to implement by ourselves. The process is the same for all frameworks and platforms. We just need to generate a unique string for each request and add it to the request headers. If one likes to return the request ID to the user of the web application, it can be added to the response headers too.
 
