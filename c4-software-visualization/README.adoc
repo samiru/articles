@@ -1,0 +1,14 @@
+= Visualizing Software with C4
+
+== Introduction
+
+TODO: ...
+* Automatic generation of diagrams through GitHub Actions? 
+
+== Why C4?
+
+...
+
+== References
+
+- https://c4model.com[C4 model]
