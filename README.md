@@ -6,5 +6,10 @@
 
 ## In Progress
 
+- ...
+
+## Planned
+
+- [Large Language Models](./large-language-models)
 - [Visualizing Software with C4](./c4-software-visualization)
 - [Javascript Module Systems](./javascript-module-systems)
