@@ -1,4 +1,4 @@
-= Techical Writing Using Asciidoc and Antora
+= Technical Writing Using Asciidoc and Antora
 
 == Introduction
 
@@ -24,6 +24,10 @@ Antora is a tool that can be used to create documentation sites from Asciidoc fi
 
 See link:https://docs.antora.org/antora/latest/features/[Antora Features].
 
+
+== Should haves for the processing pipeline
+
+* Grammatical and spelling checks!
 
 
 == Conclusion
