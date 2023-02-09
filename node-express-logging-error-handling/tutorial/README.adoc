@@ -342,3 +342,4 @@ To see the ideas presented in this article in action, check out https://github.c
 - X-Request-ID (https://http.dev/x-request-id)
 - Custom Errors in Javascript (https://javascript.info/custom-errors)
 - Node.js Error Handling Made Easy: Best Practices On Just About Everything You Need to Know (https://sematext.com/blog/node-js-error-handling/=what-is-error-handling-in-node-js)
+- Heroku Request ID (https://devcenter.heroku.com/articles/http-request-id)
