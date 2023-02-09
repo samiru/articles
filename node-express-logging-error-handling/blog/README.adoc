@@ -30,7 +30,7 @@ In Express, we can use a middleware to generate a request ID for each request. T
 
 A middleware that generates a request ID for each request could look like this:
 
-./middlewares/requestId.js:
+./middlewares/requestId.js
 [source, javascript]
 ----
 import { v4 as uuidv4 } from "uuid";
@@ -59,7 +59,7 @@ Let's see how we could implement request logging and error logging with request 
 
 A request logging middleware could look like this:
 
-./middlewares/requestLogger.js:
+./middlewares/requestLogger.js
 [source, javascript]
 ----
 const requestLogger = (request, response, next) => {
@@ -79,7 +79,7 @@ export default requestLogger;
 
 And similarly, an error logging middleware might look like this:
 
-./middlewares/errorLogger.js:
+./middlewares/errorLogger.js
 [source, javascript]
 ----
 const errorLogger = (error, request, response, next) => {

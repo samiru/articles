@@ -23,7 +23,7 @@ When creating APIs, we typically use several middlewares like `express.json`, a 
 
 For example, we could set request date in a middleware to be used later in the cycle, in controllers or in other middleware that gets executed later in the stack.
 
-./middlewares/requestTime.js:
+./middlewares/requestTime.js
 [source, javascript]
 ----
 const requestTime = (request, response, next) => {
@@ -73,7 +73,7 @@ Finally, to make the request ID available in functions that are not part of the 
 
 The whole middleware would look something like this:
 
-./middlewares/requestId.js:
+./middlewares/requestId.js
 [source, javascript]
 ----
 import httpcontext from "express-http-context";
@@ -109,7 +109,7 @@ As we have set request ID in the response headers, we can access it in the clien
 
 Let's log requests with the request id we have generated. We can create a middleware for this too.
 
-./middlewares/requestLogger.js:
+./middlewares/requestLogger.js
 [source, javascript]
 ----
 const requestLogger = (request, response, next) => {
@@ -144,7 +144,7 @@ For error logging, there is a type of middleware called error-handling middlewar
 
 We can use this middleware to log errors with the request ID we have generated:
 
-./middlewares/errorHandler.js:
+./middlewares/errorHandler.js
 [source, javascript]
 ----
 const errorHandler = (error, request, response, next) => {
@@ -163,7 +163,7 @@ export default errorHandler;
 
 But how our error handler gets triggered in practice? Just pass your error object to the `next()` function and Express calls your first error handler in the stack:
 
-./api/books.js:
+./api/books.js
 [source, javascript]
 ----
 // GET /api/books/:id - Get book
@@ -187,7 +187,7 @@ If we try to get a book that does not exist, next function is called with an err
 
 To return meaningful errors to client the response status should be set and reflect the generated error. Javascript Error class does not have status field but we can extend the Error class to have one:
 
-./utils/types.js:
+./utils/types.js
 [source, javascript]
 ----
 export class HttpError extends Error {
@@ -201,7 +201,7 @@ export class HttpError extends Error {
 
 With this we can write our endpoint using the new HttpError class:
 
-./api/books.js:
+./api/books.js
 [source, javascript]
 ----
 // GET /api/books/:id - Get book
@@ -221,7 +221,7 @@ router.get("/:id", async (request, response, next) => {
 
 And the error handler becomes now:
 
-./middlewares/errorHandler.js:
+./middlewares/errorHandler.js
 [source, javascript]
 ----
 const errorHandler = (error, request, response, next) => {
@@ -254,7 +254,7 @@ In actual implementation, it makes sense to log the error in one middleware and 
 
 We can split logging and returning the error into separate middlewares like this:
 
-./middlewares/errorHandler.js`
+./middlewares/errorHandler.js
 [source, javascript]
 ----
 const logError = (error, request, response, next) => {
