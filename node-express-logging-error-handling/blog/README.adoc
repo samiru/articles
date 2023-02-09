@@ -1,4 +1,4 @@
-# Improving Web Application Error Diagnosis with Request IDs
+= Improving Web Application Error Diagnosis with Request IDs
 
 Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application.
 
@@ -10,7 +10,7 @@ Maybe in this case, the authentication service was down? Or maybe the service bu
 
 Let's spend some time to understand how we can improve error diagnosis with request IDs.
 
-## Request ID to the Rescue
+== Request ID to the Rescue
 
 What is a Request ID?
 
@@ -22,7 +22,7 @@ Could we do this automatically? Well, it depends on the web server and the platf
 
 But even without support for request IDs in the platform, this is easy to implement by ourselves. The process is the same for all frameworks and platforms. We just need to generate a unique string for each request and add it to the request headers. If one likes to return the request ID to the user of the web application, it can be added to the response headers too.
 
-## Example: How to Generate Request IDs on Node Express?
+== Example: How to Generate Request IDs on Node Express?
 
 Let's see how we could implement request ID generation on Node Express. In principle, the process would be the same in other web frameworks too, just generate a unique string for each request and add it to the request headers.
 
@@ -30,9 +30,9 @@ In Express, we can use a middleware to generate a request ID for each request. T
 
 A middleware that generates a request ID for each request could look like this:
 
-`/middlewares/requestId.js`:
-
-```javascript
+./middlewares/requestId.js:
+[source, javascript]
+----
 import { v4 as uuidv4 } from "uuid";
 
 const requestId = (request, response, next) => {
@@ -45,13 +45,13 @@ const requestId = (request, response, next) => {
 };
 
 export default requestId;
-```
+----
 
 The middleware uses the `uuid` package to generate a unique request ID. The request ID is then added to the request headers and the response headers. And finally, middleware calls the `next` middleware function in the request-response cycle.
 
 Now the request ID is available later in the request-response cycle, for example in the error handling or logging middleware.
 
-## How to Log Requests and Errors with Request IDs?
+== How to Log Requests and Errors with Request IDs?
 
 Typically, request logs and error logs are written to different files or locations. With the request ID, we can easily connect the request to the error log, and follow the request through the logs.
 
@@ -59,9 +59,9 @@ Let's see how we could implement request logging and error logging with request 
 
 A request logging middleware could look like this:
 
-`/middlewares/requestLogger.js`:
-
-```javascript
+./middlewares/requestLogger.js:
+[source, javascript]
+----
 const requestLogger = (request, response, next) => {
   const requestId = request.headers["requestId"];
 
@@ -75,13 +75,13 @@ const requestLogger = (request, response, next) => {
 };
 
 export default requestLogger;
-```
+----
 
 And similarly, an error logging middleware might look like this:
 
-`/middlewares/errorLogger.js`:
-
-```javascript
+./middlewares/errorLogger.js:
+[source, javascript]
+----
 const errorLogger = (error, request, response, next) => {
   const requestId = request.headers["requestId"];
 
@@ -91,11 +91,11 @@ const errorLogger = (error, request, response, next) => {
 };
 
 export default errorLogger;
-```
+----
 
 Notice, how the first parameter of the error logging middleware is the error object. We want to pass this object to the next error handler in the stack, in this case we would like at least to return the error to the user of the web application.
 
-## How to Return Request IDs to the Users of the Web Application?
+== How to Return Request IDs to the Users of the Web Application?
 
 As we already have set the request ID in the response headers in our request ID middleware, the request id is returned to the user of the web application automatically.
 
@@ -105,13 +105,13 @@ To determine if the users of the web application should be able to see the reque
 
 This way the user could pass the request ID to the support team for closer examination.
 
-## How to pass Request IDs to Microservices?
+== How to pass Request IDs to Microservices?
 
 In our APIs, we might make calls also to external services. If these services are managed by us, we could add the request ID to the request headers of the calls to the services. This way, we could follow the request through the logs of these services too.
 
 We might or might not have the logs aggregated in one place from all these services. In any case, having the request ID available will make it easier to resolve issues.
 
-## Conclusion
+== Conclusion
 
 In web application development, error handling and logging are essential for tracking unexpected situations and returning meaningful error messages to users. A request ID is a unique identifier for each request that can be used for easy identification of requests and errors in the logs.
 
@@ -121,8 +121,8 @@ We have also seen how to log requests and errors with request IDs, and discussed
 
 All in all, request IDs are a simple but powerful tool for tracking requests and errors in web applications.
 
-## Author Information
+== Author Information
 
 Sami Ruokamo is a software developer and works at Buutti. He is interested in software development, especially in web development. He has been working with web application development for over 10 years. He is also interested in DevOps and cloud technologies.
 
-To see a more thorough presentation of implementing these ideas on Node Express, check out https://github.com/samiru/articles/blob/main/node-express-logging-error-handling/node-express.request-id.tutorial.md.
+To see a more thorough presentation of implementing these ideas on Node Express, check out https://github.com/samiru/articles/blob/main/node-express-logging-error-handling/tutorial.

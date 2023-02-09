@@ -3,7 +3,10 @@
 == Introduction
 
 TODO: ...
+
 * Automatic generation of diagrams through GitHub Actions? 
+* Asciidoctor & Structurizr (C4):
+** https://blog.codecentric.de/architecture-documentation-docs-as-code-structurizr-asciidoctor[Architecture docs as code with Structurizr & Asciidoctor. Part 1: Workflow and tooling]
 
 == Why C4?
 
