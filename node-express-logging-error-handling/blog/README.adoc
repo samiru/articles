@@ -1,6 +1,6 @@
 = Improving Web Application Error Diagnosis with Request IDs
 
-Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log out something. We also want to return meaningful error messages to the users of the web application.
+Error handling and logging, they go hand in hand in web application development. Whenever we encounter unexpected situations in web applications, we want to log something. We also want to return meaningful error messages to the users of the web application.
 
 Imagine the following scenario:
 
