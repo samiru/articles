@@ -16,11 +16,11 @@ Antora is a tool that can be used to create documentation sites from Asciidoc fi
 
 * Bring in content from multiple sources
 * Version content (documentation should be versioned too!)
-* Reference content using resouce identifiers (de-couples content from URLs or file paths)
+* Reference content using resource identifiers (de-couples content from URLs or file paths)
 * Navigation as content (AsciiDoc lists)
 * Supports redirects
 * Publish to multiple destinations
-* A modular architecture that allows you to extend Antora with your own components
+* A modular architecture that allows you to extend Antora with your components
 
 See link:https://docs.antora.org/antora/latest/features/[Antora Features].
 
