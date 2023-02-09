@@ -1,0 +1,35 @@
+= Techical Writing Using Asciidoc and Antora
+
+== Introduction
+
+=== What is Asciidoc?
+
+Asciidoc is a plain text markup language that can be used to write documentation. It is a markup language that is easy to read and write. It is also easy to convert to other formats such as HTML, PDF, and DocBook.
+
+=== What is Asciidoctor?
+
+Asciidoctor is a tool that can be used to convert Asciidoc files to other formats. It is a Ruby gem that can be installed using RubyGems.
+
+=== What is Antora?
+
+Antora is a tool that can be used to create documentation sites from Asciidoc files. It is a Node.js package that can be installed using NPM.
+
+* Bring in content from multiple sources
+* Version content (documentation should be versioned too!)
+* Reference content using resouce identifiers (de-couples content from URLs or file paths)
+* Navigation as content (AsciiDoc lists)
+* Supports redirects
+* Publish to multiple destinations
+* A modular architecture that allows you to extend Antora with your own components
+
+See link:https://docs.antora.org/antora/latest/features/[Antora Features].
+
+
+
+== Conclusion
+
+== References
+
+* https://asciidoc.org[Asciidoc]
+* https://asciidoctor.org[Asciidoctor]
+* https://antora.org[Antora]
