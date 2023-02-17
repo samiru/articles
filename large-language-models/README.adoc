@@ -14,6 +14,7 @@ TODO: ...
 == References
 
 - https://clementneo.com/posts/2023/02/11/we-found-an-neuron[We Found an Neuron in GPT-2]
+- https://news.ycombinator.com/item?id=34821414[We Found an Neuron in GPT-2 (Hacker News)]
 - https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/[What Is ChatGPT Doing … and Why Does It Work?]
 - https://news.ycombinator.com/item?id=34796611[What Is ChatGPT Doing … and Why Does It Work? (Hacker News)]
 - https://www.buildt.ai/blog/incorrectusage[Use GPT-3 incorrectly: reduce costs 40x and increase speed by 5x]
